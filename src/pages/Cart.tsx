@@ -16,9 +16,9 @@ const Cart = () => {
             id: productId,
             title: "placeholder",
             price: 0,
+            category: {id: 0, name: "mock", image:""},
             description: "",
-            category: 0,
-            images: []
+            images: [],
         }
 
         dispatch(addProductToCart(product))
