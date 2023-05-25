@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import Product from "../types/Product";
 
 interface CartProduct {
-  product: Product;
+  productId: number;
   count: number;
 }
 
@@ -21,16 +21,16 @@ const cartSlice = createSlice({
     addProductToCart: (state, action: PayloadAction<Product>) => {
       if (
         state.products.find(
-          (cartProduct) => cartProduct.product.id === action.payload.id
+          (cartProduct) => cartProduct.productId === action.payload.id
         )
       )
         return;
 
-      state.products.push({ product: action.payload, count: 1 });
+      state.products.push({ productId: action.payload.id, count: 1 });
     },
     removeProductFromCart: (state, action: PayloadAction<number>) => {
       state.products = state.products.filter(
-        (cartProduct) => cartProduct.product.id !== action.payload
+        (cartProduct) => cartProduct.productId !== action.payload
       );
     },
     updateCartProduct: (
@@ -38,7 +38,7 @@ const cartSlice = createSlice({
       action: PayloadAction<{ id: number; count: number }>
     ) => {
       const cartProduct = state.products.find(
-        (cartPr) => cartPr.product.id === action.payload.id
+        (cartPr) => cartPr.productId === action.payload.id
       );
       if (!cartProduct) return;
       const newCount = cartProduct.count + action.payload.count;
