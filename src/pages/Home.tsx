@@ -3,41 +3,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
-import useAppSelector from "../hooks/useAppSelector";
-import useAppDispatch from "../hooks/useAppDispatch";
-import { loginUser, registerUser } from "../reducers/userReducer";
 import { Link } from "react-router-dom";
 import Slide from "@mui/material/Slide";
 
 const Home = () => {
-    const user = useAppSelector(state => state.userReducer);
-    const dispatch = useAppDispatch();
     const containerRef = useRef(null);
 
-    const registerBtn = () => {
-        dispatch(registerUser({
-            name: "John",
-            email: "John@mail.com",
-            avatar: "https://api.lorem.space/image/face?w=640&h=480&r=867",
-            password: "1234"
-        }))
-    }
-    const loginBtn = () => {
-        if (user.currentUser === null) return;
-        if (user.currentUser === undefined) return;
-
-        dispatch(loginUser({
-            email: user.currentUser.email,
-            password: user.currentUser.password
-        }))
-    }
-    const infoBtn = () => {
-        console.log(user);
-    }
-
     return (
-        <Box sx={{ padding: "5em 7em", backgroundColor: "beige", height: "100%", color: "#050035", overflow: "hidden" }} ref={containerRef}>
+        <Box sx={{ padding: "5em 7em", height: "100%", color: "#050035", overflow: "hidden" }} ref={containerRef}>
             <Box sx={{ height: "auto", overflow: "hidden" }}>
                 <Slide direction="up" in={true} container={containerRef.current} timeout={350}>
                     <Typography
@@ -81,7 +54,7 @@ const Home = () => {
                     <Button 
                         sx={{ marginTop: "4em" }} 
                         component={Link} 
-                        to={"/product"} 
+                        to={"/products"} 
                         variant="contained" 
                         size="large" 
                         endIcon={<ArrowForwardIosIcon fontSize="small" />}>

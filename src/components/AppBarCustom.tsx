@@ -1,20 +1,11 @@
-import React, { FormEvent, useState } from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AppBarCustom = () => {
-    const [searchItem, setSearchItem] = useState<string>("");
-    const navigate = useNavigate();
-
-    const searchBrewery = (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      if (!searchItem) return;
-      navigate(`/search/${searchItem}`);
-    }
-
     return (
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" sx={{ bgcolor: "#282c34" }}>
@@ -34,13 +25,13 @@ const AppBarCustom = () => {
                     textDecoration: 'none',
                 }}
                 >
-                HOME |
+                | HOME |
                 </Typography>
                 <Typography
                 variant="h6"
                 noWrap
                 component={Link}
-                to={"/product"}
+                to={"/products"}
                 sx={{
                     mr: 2,
                     display: { xs: 'none', md: 'flex' },
@@ -68,7 +59,7 @@ const AppBarCustom = () => {
                     textDecoration: 'none',
                 }}
                 >
-                | PROFILE
+                | PROFILE |
                 </Typography>
             </Toolbar>
         </AppBar>
