@@ -6,28 +6,31 @@ import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
 import Cart from './pages/Cart'
 import Product from './pages/Product'
+import Navigation from './pages/Navigation'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Navigation />,
     errorElement: <NotFound />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/product",
+        element: <Product />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      }]
   },
-  {
-    path: "/product",
-    element: <Product />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/cart",
-    element: <Cart />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-    errorElement: <NotFound />,
-  }
 ])
 
 const App = () => {
