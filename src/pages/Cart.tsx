@@ -1,8 +1,15 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import Product from "../types/Product";
-import { addProductToCart, removeProductFromCart, updateCartProduct } from "../reducers/cartReducer";
+import { addProductToCart, getTotal, removeProductFromCart, updateCartProduct } from "../reducers/cartReducer";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import ProductStackItem from "../components/ProductStackItem";
+import { getProductById } from "../reducers/productReducer";
 
 const Cart = () => {
     const cart = useAppSelector(state => state.cartReducer);
@@ -21,7 +28,7 @@ const Cart = () => {
             images: [],
         }
 
-        dispatch(addProductToCart(product))
+        dispatch(addProductToCart(product.id))
     }
     const removeProduct = () => {
         dispatch(removeProductFromCart(productId))
@@ -29,34 +36,30 @@ const Cart = () => {
     const changeCount = () => {
         dispatch(updateCartProduct({id: productId, count: productCount}))
     }
-    const infoButton = () => {
-        console.log(cart.products);
-    }
-    const submitProductInfo = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("id: ", productId)
-        console.log("count: ", productCount)
-    }
 
     return (
-        <div>
-            Cart page
-            <form onSubmit={(e) => submitProductInfo(e)}>
-                <input
-                    placeholder="Product ID"
-                    onChange={(e)=> setProductId(parseInt(e.target.value))} 
-                />
-                <input
-                    placeholder="Count"
-                    onChange={(e)=> setProductCount(parseInt(e.target.value))} 
-                />
-                <button type="submit">submit</button>
-            </form>
-            <button onClick={addProduct}>Add</button>
-            <button onClick={removeProduct}>Remove</button>
-            <button onClick={changeCount}>Change</button>
-            <button onClick={infoButton}>Info</button>
-        </div>
+        <Box sx={{ padding: "8em 7em", backgroundColor: "beige", height: "100%", color: "#050035" }}>
+            <Typography
+            variant="h3"
+            noWrap
+            sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+            }}
+            >
+                Cart: {getTotal(cart.products)} items
+            </Typography>
+            <Stack spacing={2} sx={{ marginTop: "2em" }}>
+                {cart.products.map(prod => (
+                    <ProductStackItem {...prod} />
+                ))}
+            </Stack>
+        </Box>
     )
 }
 

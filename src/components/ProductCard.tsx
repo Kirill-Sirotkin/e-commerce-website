@@ -9,12 +9,21 @@ import { Link } from "react-router-dom";
 import Product from "../types/Product";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
+import useAppSelector from "../hooks/useAppSelector";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { addProductToCart } from "../reducers/cartReducer";
 
 const ProductCard = (props: Product) => {
+    const cart = useAppSelector(state => state.cartReducer);
+    const dispatch = useAppDispatch();
+    
     return (
         <Card sx={{ bgcolor: "#3d434f", color: "white", height: "450px", minWidth: "415px" }}>
-            <CardHeader
+            <CardHeader 
+            component={Link} 
+            to={`/product/${props.id}`}
             title={props.title}
+            sx={{ color: "white" }}
             />
             <CardMedia
             component="img"
@@ -31,7 +40,7 @@ const ProductCard = (props: Product) => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button component={Link} to={`/product/${props.id}`} size="large">Learn More</Button>
+                <Button size="large" sx={{ color: "#3AB8FF"}} onClick={() => dispatch(addProductToCart(props.id))}>Add to cart</Button>
             </CardActions>
         </Card>
     )

@@ -10,7 +10,7 @@ const Home = () => {
     const containerRef = useRef(null);
 
     return (
-        <Box sx={{ padding: "5em 7em", height: "100%", color: "#050035", overflow: "hidden" }} ref={containerRef}>
+        <Box sx={{ padding: "8em 7em", height: "100%", color: "#050035", overflow: "hidden" }} ref={containerRef}>
             <Box sx={{ height: "auto", overflow: "hidden" }}>
                 <Slide direction="up" in={true} container={containerRef.current} timeout={350}>
                     <Typography

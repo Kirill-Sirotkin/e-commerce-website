@@ -36,7 +36,7 @@ const Products = () => {
     };
 
     return (
-        <Box sx={{ padding: "5em 7em", backgroundColor: "beige", height: "100%", color: "#050035" }}>
+        <Box sx={{ padding: "8em 7em", backgroundColor: "beige", height: "100%", color: "#050035" }}>
             <Box sx={{ display: "flex", gap: "2em" }}>
                 <Typography
                 variant="h3"

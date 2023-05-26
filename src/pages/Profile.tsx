@@ -25,7 +25,7 @@ const Profile = () => {
         )
     }
     return (
-        <Box sx={{ padding: "7em" }}>
+        <Box sx={{ padding: "10em 7em" }}>
             <Box sx={{ display: "flex", gap: "3em", alignItems: "center"}}>
                 <Avatar alt="Avatar" src={user.currentUser.avatar} sx={{ width: 100, height: 100 }} />
                 <Box>

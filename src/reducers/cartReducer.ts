@@ -1,13 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import Product from "../types/Product";
 
-interface CartProduct {
+export interface CartProduct {
   productId: number;
   count: number;
 }
 
 interface CartReducer {
   products: CartProduct[];
+  total?: number;
 }
 
 const initialState: CartReducer = {
@@ -18,15 +18,17 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: initialState,
   reducers: {
-    addProductToCart: (state, action: PayloadAction<Product>) => {
-      if (
-        state.products.find(
-          (cartProduct) => cartProduct.productId === action.payload.id
-        )
-      )
-        return;
+    addProductToCart: (state, action: PayloadAction<number>) => {
+      const prod = state.products.find(
+        (cartProduct) => cartProduct.productId === action.payload
+      );
 
-      state.products.push({ productId: action.payload.id, count: 1 });
+      if (prod) {
+        prod.count++;
+        return;
+      }
+
+      state.products.push({ productId: action.payload, count: 1 });
     },
     removeProductFromCart: (state, action: PayloadAction<number>) => {
       state.products = state.products.filter(
@@ -47,6 +49,13 @@ const cartSlice = createSlice({
     },
   },
 });
+
+export const getTotal = (products: CartProduct[]) => {
+  let total = 0;
+  products.forEach((prod) => (total += prod.count));
+
+  return total;
+};
 
 const cartReducer = cartSlice.reducer;
 export const { addProductToCart, removeProductFromCart, updateCartProduct } =
