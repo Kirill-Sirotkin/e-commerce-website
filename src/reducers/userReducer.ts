@@ -5,11 +5,15 @@ import UserCreateInfo from "../types/UserCreateInfo";
 import UserCredentials from "../types/UserCredentials";
 import User from "../types/User";
 import axios, { AxiosError } from "axios";
+import { useDispatch } from "react-redux";
+import useAppDispatch from "../hooks/useAppDispatch";
 
 interface UserReducer {
   tokens?: Tokens;
   currentUser?: User;
   loading: boolean;
+  errorMessageLogin?: string;
+  errorMessageRegister?: string;
 }
 
 const initialState: UserReducer = {
@@ -25,7 +29,7 @@ const userSlice = createSlice({
       console.log("registration finished");
 
       if (action.payload instanceof AxiosError) {
-        console.log(action.payload.message);
+        state.errorMessageRegister = action.payload.message;
       } else {
         state.currentUser = action.payload;
       }
@@ -34,9 +38,21 @@ const userSlice = createSlice({
       console.log("login finished");
 
       if (action.payload instanceof AxiosError) {
-        console.log(action.payload.message);
+        state.errorMessageLogin = "Wrong email or password";
       } else {
         state.tokens = action.payload;
+        localStorage.setItem("access_token", action.payload.access_token);
+        localStorage.setItem("refresh_token", action.payload.refresh_token);
+      }
+      console.log("login finished 2");
+    });
+    build.addCase(authenticateUser.fulfilled, (state, action) => {
+      console.log("auth finished");
+
+      if (action.payload instanceof AxiosError) {
+        state.errorMessageLogin = "Cannot authenticate";
+      } else {
+        state.currentUser = action.payload;
       }
     });
   },
@@ -67,6 +83,29 @@ export const loginUser = createAsyncThunk(
       const result = await axios.post<Tokens>(
         "https://api.escuelajs.co/api/v1/auth/login",
         credentials
+      );
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return error;
+    }
+  }
+);
+
+export const authenticateUser = createAsyncThunk(
+  "authenticateUser",
+  async (tokens: Tokens) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${tokens.access_token}`,
+      },
+    };
+
+    console.log("AUTH!");
+    try {
+      const result = await axios.get<User>(
+        "https://api.escuelajs.co/api/v1/auth/profile",
+        config
       );
       return result.data;
     } catch (e) {

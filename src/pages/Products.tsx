@@ -1,9 +1,8 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { createProduct, deleteProduct, getAllProducts, sortProducts, updateProduct } from "../reducers/productReducer";
-import ProductCreateInfo from "../types/ProductCreateInfo";
+import { getAllProducts, sortProducts } from "../reducers/productReducer";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
@@ -19,39 +18,10 @@ const Products = () => {
 
     const [sortSelection, setSortSelection] = useState<string>("");
 
-    const [productId, setProductId] = useState<number>(0);
-    const [productTitle, setProductTitle] = useState<string>("");
-
     useEffect(() => {
         dispatch(getAllProducts());
         console.log("fetching...")
     }, [dispatch])
-
-    const getAll = () => {
-        dispatch(getAllProducts());
-    }
-    const createPr = () => {
-        const product: ProductCreateInfo = {
-            title: productTitle,
-            price: 100,
-            description: "Test product!",
-            images: ["https://api.lorem.space/image/shoes?w=640&h=480&r=4508"],
-            categoryId: 1
-        }
-
-        dispatch(createProduct(product));
-    }
-    const updatePr = () => {
-        const product = {
-            title: productTitle,
-            price: 200
-        }
-
-        dispatch(updateProduct({product, id: productId}));
-    }
-    const deletePr = () => {
-        dispatch(deleteProduct(productId));
-    }
 
     const sortChange = (event: SelectChangeEvent) => {
         switch(event.target.value) {

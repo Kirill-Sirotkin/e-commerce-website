@@ -12,7 +12,7 @@ import CardMedia from "@mui/material/CardMedia";
 
 const ProductCard = (props: Product) => {
     return (
-        <Card sx={{ bgcolor: "#3d434f", color: "white", height: "450px" }}>
+        <Card sx={{ bgcolor: "#3d434f", color: "white", height: "450px", minWidth: "415px" }}>
             <CardHeader
             title={props.title}
             />
