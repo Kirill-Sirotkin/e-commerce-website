@@ -5,8 +5,6 @@ import UserCreateInfo from "../types/UserCreateInfo";
 import UserCredentials from "../types/UserCredentials";
 import User from "../types/User";
 import axios, { AxiosError } from "axios";
-import { useDispatch } from "react-redux";
-import useAppDispatch from "../hooks/useAppDispatch";
 
 interface UserReducer {
   tokens?: Tokens;

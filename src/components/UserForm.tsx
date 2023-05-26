@@ -12,7 +12,6 @@ import Button from '@mui/material/Button';
 import useAppSelector from '../hooks/useAppSelector';
 import useAppDispatch from '../hooks/useAppDispatch';
 import { authenticateUser, loginUser, registerUser } from '../reducers/userReducer';
-import { AxiosError } from 'axios';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -73,7 +72,6 @@ const UserForm = () => {
     const token = localStorage.getItem("access_token");
     if (token) dispatch(authenticateUser({access_token: token, refresh_token: ""}))
   }
-  
 
   const submitRegister = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

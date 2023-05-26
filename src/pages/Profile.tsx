@@ -5,6 +5,8 @@ import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import UserForm from "../components/UserForm";
 import { authenticateUser } from "../reducers/userReducer";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 
 const Profile = () => {
     const user = useAppSelector(state => state.userReducer);
@@ -23,8 +25,57 @@ const Profile = () => {
         )
     }
     return (
-        <Box>
-            Profile!
+        <Box sx={{ padding: "7em" }}>
+            <Box sx={{ display: "flex", gap: "3em", alignItems: "center"}}>
+                <Avatar alt="Avatar" src={user.currentUser.avatar} sx={{ width: 100, height: 100 }} />
+                <Box>
+                <Typography
+                variant="h2"
+                noWrap
+                sx={{
+                    mr: 2,
+                    display: { xs: 'none', md: 'flex' },
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                    letterSpacing: '.3rem',
+                    color: 'inherit',
+                    textDecoration: 'none',
+                }}
+                >
+                {user.currentUser.name}
+                </Typography>
+                <Typography
+                variant="h5"
+                noWrap
+                sx={{
+                    mr: 2,
+                    display: { xs: 'none', md: 'flex' },
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                    letterSpacing: '.3rem',
+                    color: 'inherit',
+                    textDecoration: 'none',
+                }}
+                >
+                {user.currentUser.email}
+                </Typography>
+                <Typography
+                    variant="h5"
+                    noWrap
+                    sx={{
+                        mr: 2,
+                        display: { xs: 'none', md: 'flex' },
+                        fontFamily: 'monospace',
+                        fontWeight: 900,
+                        letterSpacing: '.3rem',
+                        color: 'inherit',
+                        textDecoration: 'none',
+                    }}
+                    >
+                    {user.currentUser.role}
+                </Typography>
+                </Box>
+            </Box>
         </Box>
     )
 }
