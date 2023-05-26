@@ -2,19 +2,17 @@ import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 
 import Product from "../types/Product";
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { CartProduct, addProductToCart, removeProductFromCart, updateCartProduct } from "../reducers/cartReducer";
+import { CartProduct, removeProductFromCart, updateCartProduct } from "../reducers/cartReducer";
 import axios, { AxiosError } from "axios";
 import Box from "@mui/material/Box";
-import { Add, AddCircleOutlined, DeleteOutlineOutlined, Remove, RemoveCircleOutlined } from "@mui/icons-material";
+import { AddCircleOutlined, DeleteOutlineOutlined, RemoveCircleOutlined } from "@mui/icons-material";
 
 const ProductStackItem = (props: CartProduct) => {
     const cart = useAppSelector(state => state.cartReducer);

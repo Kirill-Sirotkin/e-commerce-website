@@ -9,12 +9,10 @@ import { Link } from "react-router-dom";
 import Product from "../types/Product";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
-import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { addProductToCart } from "../reducers/cartReducer";
 
 const ProductCard = (props: Product) => {
-    const cart = useAppSelector(state => state.cartReducer);
     const dispatch = useAppDispatch();
     
     return (

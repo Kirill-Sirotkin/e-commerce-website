@@ -7,6 +7,7 @@ import Profile from './pages/Profile'
 import Cart from './pages/Cart'
 import Products from './pages/Products'
 import Navigation from './pages/Navigation'
+import Product from './pages/Product'
 
 const router = createBrowserRouter([
   {
@@ -21,10 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
-        children: [{
-          path: "/products/:id",
-          element: <Products />
-        }]
+      },
+      {
+        path: "/product/:id",
+        element: <Product />
       },
       {
         path: "/cart",
