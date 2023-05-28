@@ -31,8 +31,6 @@ const userSlice = createSlice({
   },
   extraReducers: (build) => {
     build.addCase(registerUser.fulfilled, (state, action) => {
-      console.log("registration finished");
-
       if (action.payload instanceof AxiosError) {
         state.errorMessageRegister = action.payload.message;
       } else {
@@ -41,8 +39,6 @@ const userSlice = createSlice({
       }
     });
     build.addCase(loginUser.fulfilled, (state, action) => {
-      console.log("login finished");
-
       if (action.payload instanceof AxiosError) {
         state.errorMessageLogin = "Wrong email or password";
         state.currentUser = undefined;
@@ -54,8 +50,6 @@ const userSlice = createSlice({
       }
     });
     build.addCase(authenticateUser.fulfilled, (state, action) => {
-      console.log("auth finished");
-
       if (action.payload instanceof AxiosError) {
         state.errorMessageLogin = "Cannot authenticate";
       } else {
@@ -64,8 +58,6 @@ const userSlice = createSlice({
       }
     });
     build.addCase(refreshUser.fulfilled, (state, action) => {
-      console.log("refresh finished");
-
       if (action.payload instanceof AxiosError) {
         state.errorMessageLogin = "Session invalid";
       } else {
@@ -79,7 +71,6 @@ const userSlice = createSlice({
 export const registerUser = createAsyncThunk(
   "registerUser",
   async (user: UserCreateInfo) => {
-    console.log("REGISTER!");
     try {
       const result = await axios.post<User>(
         "https://api.escuelajs.co/api/v1/users/",
@@ -96,7 +87,6 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "loginUser",
   async (credentials: UserCredentials) => {
-    console.log("LOGIN!");
     try {
       const result = await axios.post<Tokens>(
         "https://api.escuelajs.co/api/v1/auth/login",
@@ -118,8 +108,6 @@ export const authenticateUser = createAsyncThunk(
         Authorization: `Bearer ${tokens.access_token}`,
       },
     };
-
-    console.log("AUTH!");
     try {
       const result = await axios.get<User>(
         "https://api.escuelajs.co/api/v1/auth/profile",
@@ -139,8 +127,6 @@ export const refreshUser = createAsyncThunk(
     const refresh = {
       refreshToken: tokens.refresh_token,
     };
-
-    console.log("REFRESH!");
     try {
       const result = await axios.post<Tokens>(
         "https://api.escuelajs.co/api/v1/auth/refresh-token",

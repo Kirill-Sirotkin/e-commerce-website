@@ -26,7 +26,6 @@ const productSlice = createSlice({
       action: PayloadAction<["category" | "price", number]>
     ) => {
       if (action.payload[0] === "category") {
-        console.log("sorting by category");
         state.products.sort((a, b) => {
           const nameA = a.category.name.toUpperCase();
           const nameB = b.category.name.toUpperCase();
@@ -40,7 +39,6 @@ const productSlice = createSlice({
           return 0;
         });
       } else {
-        console.log("sorting by price");
         state.products.sort((a, b) => {
           return a.price - b.price;
         });
@@ -62,8 +60,6 @@ const productSlice = createSlice({
   },
   extraReducers: (build) => {
     build.addCase(getAllProducts.fulfilled, (state, action) => {
-      console.log("get all products finished");
-
       if (action.payload instanceof AxiosError) {
         console.log(action.payload.message);
       } else {
@@ -72,8 +68,6 @@ const productSlice = createSlice({
       }
     });
     build.addCase(getProductById.fulfilled, (state, action) => {
-      console.log("get product by id finished");
-
       if (action.payload instanceof AxiosError) {
         console.log(action.payload.message);
       } else {
@@ -81,8 +75,6 @@ const productSlice = createSlice({
       }
     });
     build.addCase(createProduct.fulfilled, (state, action) => {
-      console.log("create product finished");
-
       if (action.payload instanceof AxiosError) {
         console.log(action.payload.message);
       } else {
@@ -90,8 +82,6 @@ const productSlice = createSlice({
       }
     });
     build.addCase(updateProduct.fulfilled, (state, action) => {
-      console.log("update product finished");
-
       if (action.payload instanceof AxiosError) {
         console.log(action.payload.message);
       } else {
@@ -99,8 +89,6 @@ const productSlice = createSlice({
       }
     });
     build.addCase(deleteProduct.fulfilled, (state, action) => {
-      console.log("delete product finished");
-
       if (action.payload instanceof AxiosError) {
         console.log(action.payload.message);
       } else {
@@ -111,7 +99,6 @@ const productSlice = createSlice({
 });
 
 export const getAllProducts = createAsyncThunk("getAllProducts", async () => {
-  console.log("GET ALL PRODUCTS!");
   try {
     const result = await axios.get<Product[]>(
       "https://api.escuelajs.co/api/v1/products"
@@ -126,7 +113,6 @@ export const getAllProducts = createAsyncThunk("getAllProducts", async () => {
 export const getProductById = createAsyncThunk(
   "getProductById",
   async (id: number) => {
-    console.log(`GET PRODUCT: ${id}!`);
     try {
       const result = await axios.get<Product>(
         `https://api.escuelajs.co/api/v1/products/${id}`
@@ -142,7 +128,6 @@ export const getProductById = createAsyncThunk(
 export const createProduct = createAsyncThunk(
   "createProduct",
   async (product: ProductCreateInfo) => {
-    console.log("CREATING PRODUCT!");
     try {
       const result = await axios.post<Product>(
         "https://api.escuelajs.co/api/v1/products/",
@@ -159,7 +144,6 @@ export const createProduct = createAsyncThunk(
 export const updateProduct = createAsyncThunk(
   "updateProduct",
   async (updateInfo: { product: any; id: number }) => {
-    console.log(`UPDATING PRODUCT ${updateInfo.id}!`);
     try {
       const result = await axios.put<Product>(
         `https://api.escuelajs.co/api/v1/products/${updateInfo.id}`,
@@ -176,7 +160,6 @@ export const updateProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
   "deleteProduct",
   async (id: number) => {
-    console.log(`DELETING PRODUCT ${id}!`);
     try {
       const result = await axios.delete<boolean>(
         `https://api.escuelajs.co/api/v1/products/${id}`

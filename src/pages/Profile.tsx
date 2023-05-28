@@ -16,12 +16,6 @@ const Profile = () => {
     useEffect(() => {
         const token = localStorage.getItem("refresh_token");
         if (token) dispatch(refreshUser({access_token: "", refresh_token: token}))
-        .then(() => {
-            console.log("refresh 1/2")
-            if (user.tokens) {
-                console.log("refresh 2/2")
-            }
-        })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch])

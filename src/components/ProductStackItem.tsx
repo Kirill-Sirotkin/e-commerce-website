@@ -42,7 +42,6 @@ const ProductStackItem = (props: CartProduct) => {
     
     const getProductById = 
         async (id: number) => {
-        console.log(`GET PRODUCT: ${id}!`);
         try {
             const result = await axios.get<Product>(
             `https://api.escuelajs.co/api/v1/products/${id}`

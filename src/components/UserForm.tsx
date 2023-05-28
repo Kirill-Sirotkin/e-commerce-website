@@ -67,7 +67,6 @@ const UserForm = () => {
 
   const submitLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(loginEmail, loginPassword);
     await dispatch(loginUser({email: loginEmail, password: loginPassword}))
     const token = localStorage.getItem("access_token");
     if (token) dispatch(authenticateUser({access_token: token, refresh_token: ""}))
@@ -75,14 +74,12 @@ const UserForm = () => {
 
   const submitRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(loginEmail, loginPassword);
     dispatch(registerUser({
         email: registerEmail, 
         password: registerPassword, 
         name: registerName, 
         avatar: "https://api.lorem.space/image/face?w=640&h=480&r=867"}))
         .then(() => {
-          console.log("THEN LOGIN");
           dispatch(loginUser({email: registerEmail, password: registerPassword}))
         });
   }

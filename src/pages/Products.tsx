@@ -24,11 +24,11 @@ const Products = () => {
 
     useEffect(() => {
         dispatch(getAllProducts());
-        console.log("fetching...")
     }, [dispatch])
 
     useEffect(() => {
         dispatch(setProductsOnPage(page ? parseInt(page) : 1));
+        window.scrollTo(0,0);
     }, [dispatch, page])
 
     const sortChange = (event: SelectChangeEvent) => {
