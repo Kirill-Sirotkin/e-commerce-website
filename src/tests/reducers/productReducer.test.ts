@@ -34,8 +34,8 @@ describe("Testing productReducer", () => {
       images: [],
     };
     const state = productReducer(
-      { products: [product3, product1, product2] },
-      sortProducts("price")
+      { products: [product3, product1, product2], productsOnPage: [] },
+      sortProducts(["price", 1])
     );
     expect(state.products).toEqual([product3, product2, product1]);
   });
@@ -65,8 +65,8 @@ describe("Testing productReducer", () => {
       images: [],
     };
     const state = productReducer(
-      { products: [product3, product1, product2] },
-      sortProducts("category")
+      { products: [product3, product1, product2], productsOnPage: [] },
+      sortProducts(["category", 1])
     );
     expect(state.products).toEqual([product1, product3, product2]);
   });

@@ -5,6 +5,7 @@ import ProductCreateInfo from "../types/ProductCreateInfo";
 
 interface ProductReducer {
   products: Product[];
+  productsOnPage: Product[];
   productById?: Product;
   createdProduct?: Product;
   updatedProduct?: Product;
@@ -13,14 +14,18 @@ interface ProductReducer {
 
 const initialState: ProductReducer = {
   products: [],
+  productsOnPage: [],
 };
 
 const productSlice = createSlice({
   name: "products",
   initialState: initialState,
   reducers: {
-    sortProducts: (state, action: PayloadAction<"category" | "price">) => {
-      if (action.payload === "category") {
+    sortProducts: (
+      state,
+      action: PayloadAction<["category" | "price", number]>
+    ) => {
+      if (action.payload[0] === "category") {
         console.log("sorting by category");
         state.products.sort((a, b) => {
           const nameA = a.category.name.toUpperCase();
@@ -34,13 +39,25 @@ const productSlice = createSlice({
 
           return 0;
         });
-        return;
+      } else {
+        console.log("sorting by price");
+        state.products.sort((a, b) => {
+          return a.price - b.price;
+        });
       }
 
-      console.log("sorting by price");
-      state.products.sort((a, b) => {
-        return a.price - b.price;
-      });
+      const startIndex = (action.payload[1] - 1) * 12;
+      let endIndex = action.payload[1] * 12;
+
+      if (endIndex >= state.products.length) endIndex = state.products.length;
+      state.productsOnPage = state.products.slice(startIndex, endIndex);
+    },
+    setProductsOnPage: (state, action: PayloadAction<number>) => {
+      const startIndex = (action.payload - 1) * 12;
+      let endIndex = action.payload * 12;
+
+      if (endIndex >= state.products.length) endIndex = state.products.length;
+      state.productsOnPage = state.products.slice(startIndex, endIndex);
     },
   },
   extraReducers: (build) => {
@@ -51,6 +68,7 @@ const productSlice = createSlice({
         console.log(action.payload.message);
       } else {
         state.products = action.payload;
+        state.productsOnPage = action.payload.slice(0, 12);
       }
     });
     build.addCase(getProductById.fulfilled, (state, action) => {
@@ -172,5 +190,5 @@ export const deleteProduct = createAsyncThunk(
 );
 
 const productReducer = productSlice.reducer;
-export const { sortProducts } = productSlice.actions;
+export const { sortProducts, setProductsOnPage } = productSlice.actions;
 export default productReducer;

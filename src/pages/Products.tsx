@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-
-import useAppSelector from "../hooks/useAppSelector";
-import useAppDispatch from "../hooks/useAppDispatch";
-import { getAllProducts, sortProducts } from "../reducers/productReducer";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
@@ -10,11 +6,19 @@ import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Grid";
+import { Pagination } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+
+import useAppSelector from "../hooks/useAppSelector";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { getAllProducts, setProductsOnPage, sortProducts } from "../reducers/productReducer";
 import ProductCard from "../components/ProductCard";
 
 const Products = () => {
+    const {page} = useParams();
     const products = useAppSelector(state => state.productReducer);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const [sortSelection, setSortSelection] = useState<string>("");
 
@@ -23,17 +27,25 @@ const Products = () => {
         console.log("fetching...")
     }, [dispatch])
 
+    useEffect(() => {
+        dispatch(setProductsOnPage(page ? parseInt(page) : 1));
+    }, [dispatch, page])
+
     const sortChange = (event: SelectChangeEvent) => {
         switch(event.target.value) {
         case "price":
-            dispatch(sortProducts("price"));
+            dispatch(sortProducts(["price", page ? parseInt(page) : 1]));
           break;
         case "category":
-            dispatch(sortProducts("category"));
+            dispatch(sortProducts(["category", page ? parseInt(page) : 1]));
           break;
       }
       setSortSelection(event.target.value);
     };
+
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        navigate(`/products/${value === 1 ? "" : value}`);
+    }
 
     return (
         <Box sx={{ padding: "8em 7em", backgroundColor: "beige", height: "100%", color: "#050035" }}>
@@ -69,13 +81,19 @@ const Products = () => {
             </Box>
             <Box sx={{ marginTop: "3em" }}>
                 <Grid container justifyContent="start" spacing={3}>
-                    {products.products.map(prod => (
+                    {products.productsOnPage.map(prod => (
                         <Grid key={prod.id} item xs={4}>
                             <ProductCard {...prod}></ProductCard>
                         </Grid>
                     ))}
                 </Grid>
             </Box>
+            <Pagination 
+                sx={{ display: "flex", justifyContent: "center", marginTop: "3em"}} 
+                count={Math.ceil(products.products.length / 12)} 
+                onChange={(e, value) => { handlePageChange(e, value) }}
+                size="large" 
+            />
         </Box>
     )
 }
