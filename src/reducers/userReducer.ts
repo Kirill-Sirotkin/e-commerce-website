@@ -21,7 +21,14 @@ const initialState: UserReducer = {
 const userSlice = createSlice({
   name: "user",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    logOutUser: (state) => {
+      state.currentUser = undefined;
+      state.tokens = undefined;
+      state.errorMessageLogin = "";
+      state.errorMessageRegister = "";
+    },
+  },
   extraReducers: (build) => {
     build.addCase(registerUser.fulfilled, (state, action) => {
       console.log("registration finished");
@@ -30,6 +37,7 @@ const userSlice = createSlice({
         state.errorMessageRegister = action.payload.message;
       } else {
         state.currentUser = action.payload;
+        state.errorMessageRegister = "";
       }
     });
     build.addCase(loginUser.fulfilled, (state, action) => {
@@ -37,12 +45,13 @@ const userSlice = createSlice({
 
       if (action.payload instanceof AxiosError) {
         state.errorMessageLogin = "Wrong email or password";
+        state.currentUser = undefined;
       } else {
         state.tokens = action.payload;
         localStorage.setItem("access_token", action.payload.access_token);
         localStorage.setItem("refresh_token", action.payload.refresh_token);
+        state.errorMessageLogin = "";
       }
-      console.log("login finished 2");
     });
     build.addCase(authenticateUser.fulfilled, (state, action) => {
       console.log("auth finished");
@@ -51,6 +60,17 @@ const userSlice = createSlice({
         state.errorMessageLogin = "Cannot authenticate";
       } else {
         state.currentUser = action.payload;
+        state.errorMessageLogin = "";
+      }
+    });
+    build.addCase(refreshUser.fulfilled, (state, action) => {
+      console.log("refresh finished");
+
+      if (action.payload instanceof AxiosError) {
+        state.errorMessageLogin = "Session invalid";
+      } else {
+        state.tokens = action.payload;
+        state.errorMessageLogin = "";
       }
     });
   },
@@ -113,5 +133,27 @@ export const authenticateUser = createAsyncThunk(
   }
 );
 
+export const refreshUser = createAsyncThunk(
+  "refreshUser",
+  async (tokens: Tokens) => {
+    const refresh = {
+      refreshToken: tokens.refresh_token,
+    };
+
+    console.log("REFRESH!");
+    try {
+      const result = await axios.post<Tokens>(
+        "https://api.escuelajs.co/api/v1/auth/refresh-token",
+        refresh
+      );
+      return result.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      return error;
+    }
+  }
+);
+
 const userReducer = userSlice.reducer;
+export const { logOutUser } = userSlice.actions;
 export default userReducer;

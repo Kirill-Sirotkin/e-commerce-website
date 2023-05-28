@@ -33,7 +33,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -73,14 +73,18 @@ const UserForm = () => {
     if (token) dispatch(authenticateUser({access_token: token, refresh_token: ""}))
   }
 
-  const submitRegister = (event: FormEvent<HTMLFormElement>) => {
+  const submitRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(loginEmail, loginPassword);
     dispatch(registerUser({
         email: registerEmail, 
         password: registerPassword, 
         name: registerName, 
-        avatar: "https://api.lorem.space/image/face?w=640&h=480&r=867"}));
+        avatar: "https://api.lorem.space/image/face?w=640&h=480&r=867"}))
+        .then(() => {
+          console.log("THEN LOGIN");
+          dispatch(loginUser({email: registerEmail, password: registerPassword}))
+        });
   }
 
   return (
@@ -104,7 +108,7 @@ const UserForm = () => {
                     sx={{ gap: "1em", justifyContent: "center", width: "100%", boxSizing: "border-box", padding: "0em 10em" }}
                 >
                     <TextField 
-                    id="standard-basic" 
+                    id="standard-basic-login" 
                     label="E-mail" 
                     variant="standard" 
                     onChange={(e) => setLoginEmail(e.target.value)}
@@ -118,6 +122,7 @@ const UserForm = () => {
                     onChange={(e) => setLoginPassword(e.target.value)}
                     />
                     <Typography
+                    component={'span'}
                     color={"red"}
                     fontSize={14}
                     fontWeight={"bold"}
@@ -136,7 +141,7 @@ const UserForm = () => {
                     sx={{ gap: "1em", justifyContent: "center", width: "100%", boxSizing: "border-box", padding: "0em 10em" }}
                 >
                     <TextField 
-                    id="standard-basic" 
+                    id="standard-basic-register" 
                     label="Name" 
                     variant="standard" 
                     onChange={(e) => setRegisterName(e.target.value)}
@@ -156,6 +161,7 @@ const UserForm = () => {
                     onChange={(e) => setRegisterPassword(e.target.value)}
                     />
                     <Typography
+                    component={'span'}
                     color={"red"}
                     fontSize={14}
                     fontWeight={"bold"}
