@@ -15,7 +15,9 @@ This website allows you to browse through an e-commerce store provided by https:
 It features 4 pages: Home (landing page), Products (all products displayed with pagination), Profile (user information), Cart (products selected in the session).
 
 Products can be browsed through 12 items at a time. Click on a product name to go to a detailed page for that product. Products can be added to cart as well.
+Product creation, update and deletion are only available to an "admin" user.
 
-Profile picture features information about the user. You can also register if you do not have and account, or login if you do. It is also possible to log out.
+Profile page features information about the user. You can also register if you do not have and account, or login if you do. It is also possible to log out.
+To gain "admin" status temporarily, press the button on the right side. This will allow you to test product creation (on the Profile page), update and deletion (on the Product page).
 
 Cart shows selected products. Product count can be increased, decreased or deleted from cart. Similarly to Product page, you can visit a detailed page of every product.
