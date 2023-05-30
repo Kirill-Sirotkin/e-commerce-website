@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Product from "../types/Product";
 import axios, { AxiosError } from "axios";
 import ProductCreateInfo from "../types/ProductCreateInfo";
+import ProductUpdateInfo from "../types/ProductUpdateInfo";
 
 interface ProductReducer {
   products: Product[];
@@ -10,6 +11,8 @@ interface ProductReducer {
   createdProduct?: Product;
   updatedProduct?: Product;
   deleteSuccess?: boolean;
+  createResultMessage?: string;
+  updateResultMessage?: string;
 }
 
 const initialState: ProductReducer = {
@@ -57,6 +60,9 @@ const productSlice = createSlice({
       if (endIndex >= state.products.length) endIndex = state.products.length;
       state.productsOnPage = state.products.slice(startIndex, endIndex);
     },
+    resetDeleteStatus: (state) => {
+      state.deleteSuccess = false;
+    },
   },
   extraReducers: (build) => {
     build.addCase(getAllProducts.fulfilled, (state, action) => {
@@ -77,6 +83,7 @@ const productSlice = createSlice({
     build.addCase(createProduct.fulfilled, (state, action) => {
       if (action.payload instanceof AxiosError) {
         console.log(action.payload.message);
+        state.createResultMessage = action.payload.message;
       } else {
         state.createdProduct = action.payload;
       }
@@ -84,6 +91,7 @@ const productSlice = createSlice({
     build.addCase(updateProduct.fulfilled, (state, action) => {
       if (action.payload instanceof AxiosError) {
         console.log(action.payload.message);
+        state.updateResultMessage = action.payload.message;
       } else {
         state.updatedProduct = action.payload;
       }
@@ -143,7 +151,7 @@ export const createProduct = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
   "updateProduct",
-  async (updateInfo: { product: any; id: number }) => {
+  async (updateInfo: { product: ProductUpdateInfo; id: number }) => {
     try {
       const result = await axios.put<Product>(
         `https://api.escuelajs.co/api/v1/products/${updateInfo.id}`,
@@ -173,5 +181,6 @@ export const deleteProduct = createAsyncThunk(
 );
 
 const productReducer = productSlice.reducer;
-export const { sortProducts, setProductsOnPage } = productSlice.actions;
+export const { sortProducts, setProductsOnPage, resetDeleteStatus } =
+  productSlice.actions;
 export default productReducer;

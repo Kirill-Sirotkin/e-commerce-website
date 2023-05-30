@@ -6,12 +6,12 @@ import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Grid";
-import { Pagination } from "@mui/material";
+import { Alert, Pagination, Snackbar } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useAppSelector from "../hooks/useAppSelector";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { getAllProducts, setProductsOnPage, sortProducts } from "../reducers/productReducer";
+import { getAllProducts, resetDeleteStatus, setProductsOnPage, sortProducts } from "../reducers/productReducer";
 import ProductCard from "../components/ProductCard";
 
 const Products = () => {
@@ -45,6 +45,10 @@ const Products = () => {
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         navigate(`/products/${value === 1 ? "" : value}`);
+    }
+
+    const handleAlertClose = () => {
+        dispatch(resetDeleteStatus());
     }
 
     return (
@@ -94,6 +98,11 @@ const Products = () => {
                 onChange={(e, value) => { handlePageChange(e, value) }}
                 size="large" 
             />
+            <Snackbar open={products.deleteSuccess} autoHideDuration={6000} onClose={handleAlertClose}>
+                <Alert onClose={handleAlertClose} severity="success" sx={{ width: '100%' }}>
+                    Product deleted successfully!
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }

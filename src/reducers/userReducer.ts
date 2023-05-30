@@ -28,6 +28,9 @@ const userSlice = createSlice({
       state.errorMessageLogin = "";
       state.errorMessageRegister = "";
     },
+    promoteToAdmin: (state) => {
+      if (state.currentUser) state.currentUser.role = "admin";
+    },
   },
   extraReducers: (build) => {
     build.addCase(registerUser.fulfilled, (state, action) => {
@@ -141,5 +144,5 @@ export const refreshUser = createAsyncThunk(
 );
 
 const userReducer = userSlice.reducer;
-export const { logOutUser } = userSlice.actions;
+export const { logOutUser, promoteToAdmin } = userSlice.actions;
 export default userReducer;
